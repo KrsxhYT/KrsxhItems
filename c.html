@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Browser Cache Viewer - Krsxh</title>
-    <meta name="author" content="Krsxh">
-    <meta name="description" content="Comprehensive browser cache analysis and management tool by Krsxh">
+    <title>Enhanced Browser Cache Viewer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <script>
@@ -45,7 +43,6 @@
             <div class="bg-gray-800 border-b border-gray-700 text-white p-8">
                 <h1 class="text-4xl font-bold mb-3 text-center">🗄️ Enhanced Cache Viewer</h1>
                 <p class="text-xl opacity-80 text-center text-gray-300">Comprehensive browser cache analysis and management</p>
-                <p class="text-sm opacity-60 text-center text-gray-400 mt-2">by Krsxh</p>
             </div>
             
             <!-- Controls -->
@@ -125,7 +122,6 @@
             <div class="text-6xl mb-4">🗄️</div>
             <h3 class="text-xl font-semibold text-white mb-2">No Caches Found</h3>
             <p class="text-gray-400">No cache data available in this browser session.</p>
-            <p class="text-gray-500 text-sm mt-2">Tool by Krsxh</p>
         </div>
     </div>
 
@@ -266,10 +262,8 @@
                     btn.classList.add('bg-gray-800', 'text-white', 'border-gray-700');
                 });
                 const activeBtn = document.querySelector(`[data-filter="${filter}"]`);
-                if (activeBtn) {
-                    activeBtn.classList.add('bg-white', 'text-black', 'border-white');
-                    activeBtn.classList.remove('bg-gray-800', 'text-white', 'border-gray-700');
-                }
+                activeBtn.classList.add('bg-white', 'text-black', 'border-white');
+                activeBtn.classList.remove('bg-gray-800', 'text-white', 'border-gray-700');
                 
                 this.applyFilters();
             }
@@ -283,12 +277,14 @@
                 this.filteredData = this.cacheData.map(cache => {
                     let filteredResources = cache.resources;
 
+                    // Apply type filter
                     if (this.currentFilter !== 'all') {
                         filteredResources = filteredResources.filter(resource => 
                             resource.type === this.currentFilter
                         );
                     }
 
+                    // Apply search filter
                     if (this.searchTerm) {
                         filteredResources = filteredResources.filter(resource =>
                             resource.url.toLowerCase().includes(this.searchTerm) ||
@@ -474,6 +470,7 @@
                     const cacheNames = await caches.keys();
                     await Promise.all(cacheNames.map(name => caches.delete(name)));
                     
+                    // Show success message
                     this.showSuccessMessage('All caches cleared successfully!');
                     this.loadCacheData();
                 } catch (error) {
@@ -485,7 +482,6 @@
             exportReport() {
                 const report = {
                     timestamp: new Date().toISOString(),
-                    tool: 'Enhanced Cache Viewer by Krsxh',
                     summary: {
                         totalCaches: this.cacheData.length,
                         totalResources: this.cacheData.reduce((sum, cache) => sum + cache.resourceCount, 0),
@@ -556,7 +552,6 @@
                         <div class="text-6xl mb-4">⚠️</div>
                         <h3 class="text-xl font-semibold text-red-400 mb-2">Error Loading Cache Data</h3>
                         <p class="text-gray-400">${message}</p>
-                        <p class="text-gray-500 text-sm mt-2">Tool by Krsxh</p>
                     </div>
                 `;
             }
